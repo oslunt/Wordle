@@ -9,7 +9,7 @@ from asyncio.base_futures import _FINISHED
 import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR
+from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR
 
 def wordle():
     word = random.choice(FIVE_LETTER_WORDS)
@@ -31,6 +31,8 @@ def wordle():
                     gw.set_key_color(s[i].upper(), PRESENT_COLOR)
                 else:
                     fin = False
+                    gw.set_square_color(curRow, i, MISSING_COLOR)
+                    gw.set_key_color(s[i].upper(), MISSING_COLOR)
             
             if fin:
                 gw.show_message("You guessed correctly")
