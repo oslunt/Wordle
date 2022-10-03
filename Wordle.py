@@ -27,8 +27,11 @@ def wordle():
                     gw.set_key_color(s[i].upper(), CORRECT_COLOR)
                 elif s[i] in word:
                     fin = False
-                    gw.set_square_color(curRow, i, PRESENT_COLOR)
-                    gw.set_key_color(s[i].upper(), PRESENT_COLOR)
+                    if gw.get_key_color(s[i].upper()) == CORRECT_COLOR:
+                        gw.set_square_color(curRow, i, PRESENT_COLOR)
+                    else:
+                        gw.set_square_color(curRow, i, PRESENT_COLOR)
+                        gw.set_key_color(s[i].upper(), PRESENT_COLOR)
                 else:
                     fin = False
                     gw.set_square_color(curRow, i, MISSING_COLOR)
