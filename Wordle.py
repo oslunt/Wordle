@@ -11,6 +11,7 @@ from tkinter import W
 
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR
+from tkinter import messagebox
 
 def wordle():
     word = random.choice(FIVE_LETTER_WORDS)
@@ -61,17 +62,24 @@ def wordle():
                     fin = False
                     gw.set_square_color(curRow, i, MISSING_COLOR)
                     gw.set_key_color(s[i].upper(), MISSING_COLOR)
-
+            if curRow == 5:
+                finish(s.lower())
+                gw.show_message("The correct word is " + word.upper())
+                return
             if fin:
-                gw.show_message("You guessed correctly")
+                gw.show_message("You guessed correctly" + word.upper())
+                finish(s.lower())
             else:
                 gw.set_current_row(curRow + 1)
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
 
-
-
+    def finish(s):
+        if s == word:
+            messagebox.showinfo('information', 'Congratulations, you guessed the word correctly!')
+        else:
+            messagebox.showinfo('information', 'Sorry, you did not guess the word. The word is ' + word.upper())
 
 # Startup code
 
