@@ -33,22 +33,29 @@ def wordle():
                     fin = False
                     if s.count(s[i]) > word.count(s[i]):
                         indices = [j for j, ch in enumerate(s) if ch == s[i]]
-                        changeCol = True
+                        incorrectIndex = []
+                        correctIndex = []
                         for j in range(len(indices)):
-                            if gw.get_square_color(curRow, indices[j]) == CORRECT_COLOR:
-                                changeCol = False
-                        if changeCol:
-                            for j in range(len(indices)):
-                                if j == 0:
-                                    if gw.get_key_color(s[indices[j]].upper()) == CORRECT_COLOR:
-                                        gw.set_square_color(curRow, indices[j], PRESENT_COLOR)
-                                    else:
-                                        gw.set_square_color(curRow, indices[j], PRESENT_COLOR)
-                                        gw.set_key_color(s[indices[j]].upper(), PRESENT_COLOR)
-                                else:
-                                    gw.set_square_color(curRow, indices[j], MISSING_COLOR)
+                            if gw.get_square_color(curRow, indices[j]) != CORRECT_COLOR:
+                                incorrectIndex.append(indices[j])
+                            else:
+                                correctIndex.append(indices[j])
+
+                        if word.count(s[i]) == len(correctIndex):
+                            for j in range(len(incorrectIndex)):
+                                gw.set_square_color(curRow, incorrectIndex[j], MISSING_COLOR)
                         else:
-                            gw.set_square_color(curRow, indices[j], MISSING_COLOR)
+                            for j in range(len(incorrectIndex)):
+                                if j == 0:
+                                    if gw.get_key_color(s[incorrectIndex[j]].upper()) == CORRECT_COLOR:
+                                        gw.set_square_color(curRow, incorrectIndex[j], PRESENT_COLOR)
+                                    else:
+                                        gw.set_square_color(curRow, incorrectIndex[j], PRESENT_COLOR)
+                                        gw.set_key_color(s[incorrectIndex[j]].upper(), PRESENT_COLOR)
+                                else:
+                                    gw.set_square_color(curRow, incorrectIndex[j], MISSING_COLOR)
+                        #else:
+                        #gw.set_square_color(curRow, indices[j], MISSING_COLOR)
                         
 
                     elif gw.get_key_color(s[i].upper()) == CORRECT_COLOR:
@@ -67,7 +74,7 @@ def wordle():
                 gw.show_message("The correct word is " + word.upper())
                 return
             if fin:
-                gw.show_message("You guessed correctly" + word.upper())
+                gw.show_message("You guessed " + word.upper() + " correctly")
                 finish(s.lower())
             else:
                 gw.set_current_row(curRow + 1)
